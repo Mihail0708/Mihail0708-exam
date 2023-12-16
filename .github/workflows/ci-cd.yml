@@ -1,4 +1,4 @@
-name: Build and Test 
+name: Build Test Deploy
 
 on:
   push:
@@ -25,3 +25,15 @@ jobs:
       run: npm run test:unit
     - name: Display username
       run: echo "Mihail0708"
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to production
+        uses: johnbeynon/render-deploy-action@v0.0.8
+        with:
+          service-id: ${{ secrets.SERVICE_ID }}
+          api-key: ${{ secrets.API_KEY }}
+      - name: Wait for 90 seconds
+        run: sleep 90
